@@ -11,6 +11,7 @@ import {
   Code2,
   Lightbulb,
   BookOpen,
+  Sparkles
 } from "lucide-react";
 import { AppShell } from "@/components/layout/AppShell";
 import { GuideEngine } from "@/components/guide/GuideEngine";
@@ -41,6 +42,7 @@ const typeIcons = {
   exercise: <Lightbulb className="w-4 h-4" />,
   video: <CheckCircle2 className="w-4 h-4" />,
   "quiz-mini": <CheckCircle2 className="w-4 h-4" />,
+  builder: <Sparkles className="w-4 h-4" />,
 };
 
 export default function LessonPage({ params }: Props) {
