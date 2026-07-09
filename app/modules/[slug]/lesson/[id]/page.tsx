@@ -20,6 +20,8 @@ import { Card } from "@/components/ui/Card";
 import { ProgressBar } from "@/components/ui/ProgressBar";
 import { CodeBlock } from "@/components/ui/CodeBlock";
 import { CodePlayground } from "@/components/ide/CodePlayground";
+import { CustomVideoPlayer } from "@/components/ui/CustomVideoPlayer";
+import { PortfolioBuilder } from "@/components/ide/PortfolioBuilder";
 import { useGuideStore } from "@/store/guideStore";
 import { useProgressStore } from "@/store/progressStore";
 import { useUIStore } from "@/store/uiStore";
@@ -267,6 +269,26 @@ export default function LessonPage({ params }: Props) {
                     />
                   </div>
                 </Card>
+              {/* Video Step */}
+              {step.type === "video" && (
+                <div className="mb-4">
+                  <CustomVideoPlayer 
+                    src="https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.mp4" 
+                    poster="/modules/portfolio.jpg"
+                    onComplete={() => {
+                      if (!isLast) setCurrentStepIdx((p) => p + 1);
+                      else handleComplete();
+                    }}
+                  />
+                  <p className="text-center text-sm text-gray-500 mt-2">Watch the entire video to unlock the next step.</p>
+                </div>
+              )}
+
+              {/* Builder Step */}
+              {step.type === "builder" && (
+                <div className="mb-4">
+                  <PortfolioBuilder onComplete={handleComplete} />
+                </div>
               )}
             </motion.div>
           </AnimatePresence>

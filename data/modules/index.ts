@@ -263,175 +263,50 @@ const greet = (name) => {
   },
   {
     id: "mod-2",
-    title: "React & Next.js Fundamentals",
-    slug: "react-nextjs",
-    description: "Build modern web apps with React and Next.js 15",
+    title: "Building Your Portfolio",
+    slug: "portfolio-builder",
+    description: "Create a stunning developer portfolio with AI assistance",
     longDescription:
-      "Master React's component model, hooks, state management, and server-side rendering with Next.js 15's App Router. Build real applications using TypeScript, Tailwind CSS, and modern patterns.",
-    thumbnail: "/modules/react-nextjs.jpg",
-    color: "#06b6d4",
-    icon: "⚛️",
-    difficulty: "intermediate",
-    totalLessons: 15,
-    estimatedHours: 18,
-    xpReward: 750,
+      "A developer's portfolio is their digital resume. In this interactive module, you'll first learn what makes a great portfolio, and then our AI guide will help you build and customize your own live portfolio in real-time.",
+    thumbnail: "/modules/portfolio.jpg",
+    color: "#a855f7", // purple
+    icon: "🎨",
+    difficulty: "beginner",
+    totalLessons: 1,
+    estimatedHours: 2,
+    xpReward: 1000,
     order: 2,
     prerequisites: ["mod-1"],
-    tags: ["React", "Next.js", "TypeScript", "Hooks", "SSR"],
+    tags: ["Portfolio", "Design", "AI", "Career"],
     lessons: [
       {
         id: "lesson-2-1",
         moduleId: "mod-2",
-        title: "React Components & Props",
-        slug: "components-and-props",
-        description: "Build reusable UI components",
-        duration: 25,
+        title: "Portfolio Kickoff",
+        slug: "portfolio-kickoff",
+        description: "Learn the basics and build your portfolio interactively.",
+        duration: 30,
         order: 1,
         type: "interactive",
-        xpReward: 50,
+        xpReward: 100,
         steps: [
           {
             id: "step-1",
-            title: "What is a Component?",
-            type: "explanation",
-            content:
-              "React components are independent, reusable pieces of UI. Think of them as custom HTML elements you define once and use anywhere in your app.",
+            title: "Why You Need a Portfolio",
+            type: "video",
+            content: "Watch this video to understand the anatomy of a great developer portfolio. (You must watch the entire video to proceed)",
           },
           {
             id: "step-2",
-            title: "Your First Component",
-            type: "example",
-            content:
-              "A React component is a function that returns JSX — a syntax that looks like HTML but has the full power of JavaScript.",
-            codeExample: {
-              language: "tsx",
-              code: `interface ButtonProps {
-  label: string;
-  onClick: () => void;
-  variant?: "primary" | "secondary";
-}
-
-export function Button({ label, onClick, variant = "primary" }: ButtonProps) {
-  return (
-    <button
-      onClick={onClick}
-      className={\`btn btn-\${variant}\`}
-    >
-      {label}
-    </button>
-  );
-}
-
-// Usage
-<Button label="Start Learning" onClick={() => navigate("/modules")} />`,
-              label: "Button Component",
-            },
-          },
+            title: "Build with AI",
+            type: "builder",
+            content: "Chat with your AI guide to construct your portfolio live.",
+          }
         ],
-      },
-      {
-        id: "lesson-2-2",
-        moduleId: "mod-2",
-        title: "React Hooks",
-        slug: "react-hooks",
-        description: "State and side effects with hooks",
-        duration: 30,
-        order: 2,
-        type: "interactive",
-        xpReward: 60,
-        steps: [
-          {
-            id: "step-1",
-            title: "useState",
-            type: "explanation",
-            content:
-              "useState lets you add reactive state to your components. When state changes, React automatically re-renders the component.",
-          },
-          {
-            id: "step-2",
-            title: "useState Example",
-            type: "example",
-            content: "A counter component using useState:",
-            codeExample: {
-              language: "tsx",
-              code: `import { useState } from "react";
-
-export function Counter() {
-  const [count, setCount] = useState(0);
-
-  return (
-    <div className="flex items-center gap-4">
-      <button onClick={() => setCount(c => c - 1)}>−</button>
-      <span className="text-2xl font-bold">{count}</span>
-      <button onClick={() => setCount(c => c + 1)}>+</button>
-    </div>
-  );
-}`,
-              label: "Counter with useState",
-            },
-          },
-        ],
-      },
+      }
     ],
-    quiz: [
-      {
-        id: "q1",
-        question: "What hook do you use to add state to a functional component?",
-        options: ["useEffect", "useState", "useContext", "useReducer"],
-        correctIndex: 1,
-        explanation: "useState is the primary hook for adding local state to functional components.",
-      },
-      {
-        id: "q2",
-        question: "What does JSX stand for?",
-        options: [
-          "JavaScript XML",
-          "Java Syntax Extension",
-          "JavaScript Extension",
-          "JSON XML",
-        ],
-        correctIndex: 0,
-        explanation: "JSX stands for JavaScript XML — a syntax extension that lets you write HTML-like code in JavaScript.",
-      },
-    ],
-    cheatSheet: [
-      {
-        id: "cs-1",
-        title: "useState Hook",
-        description: "Add reactive state to components",
-        code: {
-          language: "tsx",
-          code: `const [value, setValue] = useState<string>("");
-const [count, setCount] = useState(0);
-
-// Functional update (safe for async)
-setCount(prev => prev + 1);`,
-        },
-        tags: ["React", "hooks", "state"],
-      },
-      {
-        id: "cs-2",
-        title: "useEffect Hook",
-        description: "Run side effects in components",
-        code: {
-          language: "tsx",
-          code: `useEffect(() => {
-  // Runs after every render
-}, []);
-
-useEffect(() => {
-  // Runs when dependency changes
-  fetchData(id);
-}, [id]);
-
-useEffect(() => {
-  const sub = subscribe();
-  return () => sub.unsubscribe(); // Cleanup
-}, []);`,
-        },
-        tags: ["React", "hooks", "effects"],
-      },
-    ],
+    quiz: [],
+    cheatSheet: [],
   },
   {
     id: "mod-3",
