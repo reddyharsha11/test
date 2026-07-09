@@ -16,7 +16,7 @@ export default function GenderSelection() {
   };
 
   return (
-    <div className="min-h-screen bg-[#0d0e15] text-white flex flex-col items-center justify-center p-8 overflow-hidden relative">
+    <div className="min-h-screen bg-surface-50 dark:bg-surface-dark-0 text-gray-900 dark:text-white flex flex-col items-center justify-center p-8 overflow-hidden relative transition-colors duration-500">
       {/* Decorative stars/particles background */}
       <div className="absolute inset-0 opacity-20 pointer-events-none" style={{ backgroundImage: 'radial-gradient(circle, #ffffff 1px, transparent 1px)', backgroundSize: '40px 40px' }}></div>
       
@@ -24,23 +24,12 @@ export default function GenderSelection() {
         <h1 className="text-4xl font-serif font-bold mb-2 drop-shadow-md">Select your Form</h1>
         <p className="text-sm font-mono text-gray-400 uppercase tracking-widest mb-16">WHO SHALL ENTER THE CEREMONY?</p>
         
-        <div className="flex flex-col md:flex-row items-center gap-12 w-full justify-center">
-          
           <div className="flex flex-col items-center gap-6 group cursor-pointer" onClick={() => handleSelect('male')}>
-            <div className="w-48 h-48 rounded-full bg-slate-800 border-2 border-transparent group-hover:border-accentViolet group-hover:scale-105 transition flex items-center justify-center relative overflow-hidden">
+            <div className="w-64 h-64 rounded-full bg-surface-100 dark:bg-surface-dark-200 border-4 border-transparent group-hover:border-brand-500 group-hover:scale-105 transition flex items-center justify-center relative overflow-hidden shadow-2xl">
               <CharacterRenderer characterType="male" animation="wave" size="lg" />
             </div>
-            <div className="text-xl font-serif text-gray-400 group-hover:text-white transition">Male</div>
+            <div className="text-2xl font-black text-gray-400 group-hover:text-brand-500 transition">Continue as Male Avatar</div>
           </div>
-          
-          <div className="flex flex-col items-center gap-6 group cursor-pointer" onClick={() => handleSelect('female')}>
-            <div className="w-48 h-48 rounded-full bg-slate-800 border-2 border-transparent group-hover:border-accentAmber group-hover:scale-105 transition flex items-center justify-center relative overflow-hidden">
-              <CharacterRenderer characterType="female" animation="wave" size="lg" />
-            </div>
-            <div className="text-xl font-serif text-gray-400 group-hover:text-white transition">Female</div>
-          </div>
-
-        </div>
       </motion.div>
     </div>
   );

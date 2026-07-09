@@ -88,6 +88,10 @@ export function GuideCharacter() {
 
   // Keep character position adjusted outside of the Sidebar
   const leftOffset = sidebarCollapsed ? 68 : 208;
+  const currentBottom = visible ? 72 : 24;
+  const currentLeft = visible ? leftOffset : leftOffset + 24;
+  const currentScale = visible ? 1 : 0.6;
+  const currentOpacity = visible ? 1 : 0.7;
 
   // Render surprise Speech or fallback to store speech
   const activeSpeech = storeSpeech || surpriseSpeech;
@@ -195,13 +199,6 @@ export function GuideCharacter() {
     return () => clearInterval(interval);
   }, [storeSpeech, characterType]);
 
-  // Even if guide visibilty is set to false, keep the character alive
-  if (!visible) {
-    // If closed, we can render minimized or keep it always live.
-    // The user requested: "even though i get the guide mode the character should live there okay".
-    // So we bypass the visible === false check, or let it stay. Let's make it stay!
-  }
-
   const isDark = typeof document !== "undefined" && document.documentElement.classList.contains("dark");
 
   return (
@@ -209,10 +206,14 @@ export function GuideCharacter() {
       {isRaining && <RainOverlay />}
 
       <motion.div
-        className="fixed z-[95] flex items-end gap-0 pointer-events-none"
-        style={{ bottom: 72, left: leftOffset }}
+        className="fixed z-[95] flex items-end gap-0 pointer-events-none origin-bottom-left"
+        animate={{ 
+          bottom: currentBottom, 
+          left: currentLeft, 
+          scale: currentScale,
+          opacity: currentOpacity
+        }}
         initial={{ x: -120, opacity: 0 }}
-        animate={{ x: 0, opacity: 1 }}
         exit={{ x: -120, opacity: 0 }}
         transition={{ type: "spring", stiffness: 260, damping: 24 }}
       >
