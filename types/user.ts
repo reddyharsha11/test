@@ -13,6 +13,7 @@ export interface User {
   lastLoginDate: string;
   createdAt: string;
   role: "student" | "admin";
+  persona?: string;
 }
 
 export interface UserSettings {

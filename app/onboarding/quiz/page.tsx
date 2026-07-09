@@ -53,9 +53,9 @@ export default function Quiz() {
       
       setResult(winner);
       
-      // Update user role if they are logged in (mock update in store)
+      // Update user persona if they are logged in (mock update in store)
       if (user) {
-        setUser({ ...user, role: winner }, "mock-jwt-token");
+        setUser({ ...user, persona: winner }, "mock-jwt-token");
       }
     }
   };
