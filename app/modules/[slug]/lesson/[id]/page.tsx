@@ -269,6 +269,7 @@ export default function LessonPage({ params }: Props) {
                     />
                   </div>
                 </Card>
+              )}
               {/* Video Step */}
               {step.type === "video" && (
                 <div className="mb-4">
