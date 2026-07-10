@@ -3,7 +3,7 @@ import type { Module } from "@/types/module";
 export const modules: Module[] = [
   {
     id: "mod-1",
-    title: "Web Development Fundamentals",
+    title: "Persona Test (Module-1)",
     slug: "web-fundamentals",
     description: "Master HTML, CSS, and JavaScript from scratch",
     longDescription:

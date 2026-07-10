@@ -1389,9 +1389,9 @@ document.getElementById('year').innerText = new Date().getFullYear();
                 showFileExplorer: true
               }}
               files={{ 
-                "index.html": generatedHtml,
-                "styles.css": generatedCss,
-                "script.js": generatedJs
+                "/index.html": generatedHtml,
+                "/styles.css": generatedCss,
+                "/script.js": generatedJs
               }}
             />
          </div>

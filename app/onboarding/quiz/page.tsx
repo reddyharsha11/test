@@ -48,13 +48,18 @@ export default function Quiz() {
   const [step, setStep] = useState(0);
   const [scores, setScores] = useState({ frontend: 0, backend: 0, data: 0, ai: 0 });
   const [result, setResult] = useState<string | null>(null);
+  const [isTransitioning, setIsTransitioning] = useState(false);
 
   const handleNext = (type: string) => {
+    if (isTransitioning) return;
+    setIsTransitioning(true);
+
     const newScores = { ...scores, [type as keyof typeof scores]: scores[type as keyof typeof scores] + 1 };
     setScores(newScores);
     
     if (step < QUESTIONS.length - 1) {
       setStep(s => s + 1);
+      setTimeout(() => setIsTransitioning(false), 450);
     } else {
       // Calculate winner
       const winner = Object.keys(newScores).reduce((a, b) => 
@@ -67,6 +72,7 @@ export default function Quiz() {
       if (user) {
         setUser({ ...user, persona: winner }, "mock-jwt-token");
       }
+      setIsTransitioning(false);
     }
   };
 
@@ -88,6 +94,7 @@ export default function Quiz() {
   }
 
   const q = QUESTIONS[step];
+  if (!q) return null;
 
   return (
     <div className="min-h-screen bg-surface-50 dark:bg-surface-dark-0 text-gray-900 dark:text-white flex flex-col items-center justify-center p-8 overflow-hidden relative transition-colors duration-500">

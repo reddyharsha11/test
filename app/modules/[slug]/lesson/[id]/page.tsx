@@ -303,7 +303,7 @@ export default function LessonPage({ params }: Props) {
                         editorHeight: 300,
                       }}
                       files={{
-                        "App.js": `export default function App() {\n  return (\n    <div>\n      <h1>Hello GuideLearn!</h1>\n      <p>Edit this code to see it update live.</p>\n    </div>\n  );\n}`,
+                        "/App.js": `export default function App() {\n  return (\n    <div>\n      <h1>Hello GuideLearn!</h1>\n      <p>Edit this code to see it update live.</p>\n    </div>\n  );\n}`,
                       }}
                     />
                   </div>
