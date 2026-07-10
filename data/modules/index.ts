@@ -12,7 +12,7 @@ export const modules: Module[] = [
     color: "#6172f9",
     icon: "</> ",
     difficulty: "beginner",
-    totalLessons: 18,
+    totalLessons: 5,
     estimatedHours: 12,
     xpReward: 500,
     order: 1,
@@ -168,6 +168,82 @@ const user = { name, age, isLearning };
 
 console.log(\`\${name} has \${skills.length} skills!\`);`,
               label: "Variables",
+            },
+          },
+        ],
+      },
+      {
+        id: "lesson-1-4",
+        moduleId: "mod-1",
+        title: "DOM Manipulation",
+        slug: "dom-manipulation",
+        description: "Interact with and modify web pages using JavaScript",
+        duration: 30,
+        order: 4,
+        type: "interactive",
+        xpReward: 40,
+        steps: [
+          {
+            id: "step-1",
+            title: "What is the DOM?",
+            type: "explanation",
+            content:
+              "The Document Object Model (DOM) is a programming interface for web documents. It represents the page structure as a tree of nodes, allowing JS to select and edit HTML dynamically.",
+          },
+          {
+            id: "step-2",
+            title: "Selecting & Modifying",
+            type: "example",
+            content: "Select elements and edit content or styles:",
+            codeExample: {
+              language: "javascript",
+              code: `// Selecting elements
+const title = document.querySelector("#title");
+const items = document.querySelectorAll(".item");
+
+// Modifying properties
+title.textContent = "Welcome to GuideLearn!";
+title.style.color = "#6172f9";`,
+              label: "DOM Methods",
+            },
+          },
+        ],
+      },
+      {
+        id: "lesson-1-5",
+        moduleId: "mod-1",
+        title: "Modern ES6+ Features",
+        slug: "es6-features",
+        description: "Write cleaner code with ES6 advancements",
+        duration: 30,
+        order: 5,
+        type: "interactive",
+        xpReward: 50,
+        steps: [
+          {
+            id: "step-1",
+            title: "ES6 Advancements",
+            type: "explanation",
+            content:
+              "ECMAScript 6 (ES6) introduced major updates to JavaScript, making it cleaner and more powerful. Key features include arrow functions, template literals, destructuring, and spread operators.",
+          },
+          {
+            id: "step-2",
+            title: "Destructuring & Spreads",
+            type: "example",
+            content: "Unpack variables and spread arrays cleanly:",
+            codeExample: {
+              language: "javascript",
+              code: `// Destructuring
+const user = { name: "Harsha", track: "Fullstack" };
+const { name, track } = user;
+
+// Spread Operator
+const baseSkills = ["HTML", "CSS"];
+const fullSkills = [...baseSkills, "JavaScript", "React"];
+
+console.log(fullSkills);`,
+              label: "ES6 Syntax",
             },
           },
         ],
