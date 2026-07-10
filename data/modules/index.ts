@@ -310,98 +310,43 @@ const greet = (name) => {
   },
   {
     id: "mod-3",
-    title: "Backend APIs with Node.js",
-    slug: "backend-apis",
-    description: "Build scalable REST APIs with Node.js, Express & MongoDB",
+    title: "Career Job Simulation",
+    slug: "job-simulation",
+    description: "Find your ideal tech role matching your skills and interests",
     longDescription:
-      "Learn to build production-ready backend APIs using Node.js, Express, MongoDB with Mongoose, JWT authentication, middleware, error handling, and deployment.",
+      "Work through realistic scenarios, align your portfolio, and complete our career simulation to see what roles fit you best and what salary packages you can expect.",
     thumbnail: "/modules/backend-apis.jpg",
     color: "#22c55e",
-    icon: "🔧",
+    icon: "💼",
     difficulty: "intermediate",
-    totalLessons: 14,
-    estimatedHours: 16,
-    xpReward: 700,
+    totalLessons: 1,
+    estimatedHours: 1,
+    xpReward: 500,
     order: 3,
-    prerequisites: ["mod-1"],
-    tags: ["Node.js", "Express", "MongoDB", "REST API", "JWT"],
+    prerequisites: ["mod-2"],
+    tags: ["Career", "Simulation", "Job Market", "Salary"],
     lessons: [
       {
         id: "lesson-3-1",
         moduleId: "mod-3",
-        title: "Express Server Setup",
-        slug: "express-setup",
-        description: "Build your first Express API server",
-        duration: 30,
+        title: "Role Match Simulator",
+        slug: "role-simulator",
+        description: "Engage in our interactive workspace simulator.",
+        duration: 15,
         order: 1,
         type: "interactive",
-        xpReward: 50,
+        xpReward: 100,
         steps: [
           {
             id: "step-1",
-            title: "What is Express?",
-            type: "explanation",
-            content:
-              "Express.js is a minimal, flexible Node.js web application framework that provides a robust set of features for building web and mobile applications.",
-          },
-          {
-            id: "step-2",
-            title: "Your First Express Server",
-            type: "example",
-            content: "Create a REST API server in just a few lines:",
-            codeExample: {
-              language: "typescript",
-              code: `import express from "express";
-import cors from "cors";
-
-const app = express();
-
-app.use(cors());
-app.use(express.json());
-
-app.get("/api/health", (req, res) => {
-  res.json({ status: "ok", timestamp: new Date() });
-});
-
-app.listen(5000, () => {
-  console.log("🚀 Server running on port 5000");
-});`,
-              label: "Express Server",
-            },
-          },
-        ],
-      },
+            title: "Simulate Real Work",
+            type: "simulation",
+            content: "Answer questions based on technical and creative workflows to calculate matching roles and expected salary ranges.",
+          }
+        ]
+      }
     ],
-    quiz: [
-      {
-        id: "q1",
-        question: "Which method handles GET requests in Express?",
-        options: ["app.post()", "app.get()", "app.fetch()", "app.request()"],
-        correctIndex: 1,
-        explanation: "app.get() registers a route handler for HTTP GET requests.",
-      },
-    ],
-    cheatSheet: [
-      {
-        id: "cs-1",
-        title: "Express Router",
-        description: "Organize routes with Express Router",
-        code: {
-          language: "typescript",
-          code: `import { Router } from "express";
-
-const router = Router();
-
-router.get("/", getAll);
-router.post("/", create);
-router.get("/:id", getById);
-router.put("/:id", update);
-router.delete("/:id", remove);
-
-export default router;`,
-        },
-        tags: ["Express", "routing", "REST"],
-      },
-    ],
-  },
+    quiz: [],
+    cheatSheet: [],
+  }
 ];

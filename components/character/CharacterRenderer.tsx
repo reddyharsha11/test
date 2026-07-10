@@ -40,30 +40,7 @@ export function CharacterRenderer({
     setIsTalking(true);
   }, [animation]);
 
-  // Pointer eye-tracking: 3D parallax tilt towards mouse cursor
-  useEffect(() => {
-    const handleMouseMove = (e: MouseEvent) => {
-      if (!containerRef.current) return;
-      const rect = containerRef.current.getBoundingClientRect();
-      const characterCenterX = rect.left + rect.width / 2;
-      const characterCenterY = rect.top + rect.height / 2;
-      const dx = e.clientX - characterCenterX;
-      const dy = e.clientY - characterCenterY;
-      const maxTilt = 15;
-      const dist = Math.sqrt(dx * dx + dy * dy);
-      if (dist === 0) {
-        setTilt({ x: 0, y: 0 });
-      } else {
-        const factor = Math.min(1, dist / 800);
-        setTilt({
-          x: -(dy / dist) * maxTilt * factor,
-          y: (dx / dist) * maxTilt * factor,
-        });
-      }
-    };
-    window.addEventListener("mousemove", handleMouseMove);
-    return () => window.removeEventListener("mousemove", handleMouseMove);
-  }, []);
+
 
   const handleClick = () => {
     setIsClicked(true);
@@ -81,12 +58,9 @@ export function CharacterRenderer({
         style={{
           width: px,
           height: px,
-          transform: `perspective(800px) rotateX(${tilt.x}deg) rotateY(${tilt.y}deg)`,
         }}
         className={cn(
-          "relative cursor-pointer transition-transform duration-100 ease-out select-none",
-          isClicked ? "animate-bounce" : "hover:scale-105",
-          animation === "idle" && "animate-[float_2.5s_ease-in-out_infinite]",
+          "relative select-none",
           className
         )}
       >
@@ -104,12 +78,9 @@ export function CharacterRenderer({
         style={{
           width: px,
           height: px,
-          transform: `perspective(800px) rotateX(${tilt.x}deg) rotateY(${tilt.y}deg)`,
         }}
         className={cn(
-          "relative cursor-pointer transition-transform duration-100 ease-out select-none bg-transparent",
-          isClicked ? "animate-bounce" : "hover:scale-105",
-          animation === "idle" && "animate-[float_2.5s_ease-in-out_infinite]",
+          "relative select-none bg-transparent",
           className
         )}
       >
@@ -141,12 +112,9 @@ export function CharacterRenderer({
       style={{
         width: px,
         height: px,
-        transform: `perspective(800px) rotateX(${tilt.x}deg) rotateY(${tilt.y}deg)`,
       }}
       className={cn(
-        "relative cursor-pointer transition-transform duration-100 ease-out select-none overflow-visible flex items-end justify-center",
-        isClicked ? "animate-bounce" : "hover:scale-105",
-        animation === "idle" && "animate-[float_2.5s_ease-in-out_infinite]",
+        "relative select-none overflow-visible flex items-end justify-center",
         className
       )}
     >

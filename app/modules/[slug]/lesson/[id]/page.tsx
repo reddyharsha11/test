@@ -23,6 +23,7 @@ import { CodeBlock } from "@/components/ui/CodeBlock";
 import { CodePlayground } from "@/components/ide/CodePlayground";
 import { CustomVideoPlayer } from "@/components/ui/CustomVideoPlayer";
 import { PortfolioBuilder } from "@/components/ide/PortfolioBuilder";
+import { JobSimulation } from "@/components/ide/JobSimulation";
 import { useGuideStore } from "@/store/guideStore";
 import { useProgressStore } from "@/store/progressStore";
 import { useUIStore } from "@/store/uiStore";
@@ -43,6 +44,7 @@ const typeIcons = {
   video: <CheckCircle2 className="w-4 h-4" />,
   "quiz-mini": <CheckCircle2 className="w-4 h-4" />,
   builder: <Sparkles className="w-4 h-4" />,
+  simulation: <Sparkles className="w-4 h-4" />,
 };
 
 export default function LessonPage({ params }: Props) {
@@ -50,13 +52,34 @@ export default function LessonPage({ params }: Props) {
   const router = useRouter();
   const { initSequence } = useGuideStore();
   const { markLessonComplete } = useProgressStore();
-  const { addToast, triggerConfetti } = useUIStore();
+  const { addToast, triggerConfetti, setSidebarCollapsed } = useUIStore();
   const [currentStepIdx, setCurrentStepIdx] = useState(0);
   const [showHint, setShowHint] = useState(false);
   const [completed, setCompleted] = useState(false);
 
   const mod = modules.find((m) => m.slug === slug);
   const lesson = mod?.lessons.find((l) => l.id === id);
+
+  const currentModIdx = modules.findIndex((m) => m.id === mod?.id);
+  const currentLessIdx = mod?.lessons.findIndex((l) => l.id === lesson?.id) ?? -1;
+
+  let nextUrl = "/dashboard";
+  if (mod && lesson) {
+    if (currentLessIdx < mod.lessons.length - 1) {
+      const nextLesson = mod.lessons[currentLessIdx + 1];
+      nextUrl = `/modules/${mod.slug}/lesson/${nextLesson.id}`;
+    } else {
+      const nextModule = modules[currentModIdx + 1];
+      if (nextModule) {
+        const firstLesson = nextModule.lessons[0];
+        if (firstLesson) {
+          nextUrl = `/modules/${nextModule.slug}/lesson/${firstLesson.id}`;
+        } else {
+          nextUrl = `/modules/${nextModule.slug}`;
+        }
+      }
+    }
+  }
 
   useEffect(() => {
     if (lesson) {
@@ -78,10 +101,24 @@ export default function LessonPage({ params }: Props) {
     );
   }
 
-  const step = lesson.steps[currentStepIdx];
+  const step = lesson.steps?.[currentStepIdx];
   const isFirst = currentStepIdx === 0;
-  const isLast = currentStepIdx === lesson.steps.length - 1;
-  const stepPercent = progressPercent(currentStepIdx + 1, lesson.steps.length);
+  const isLast = currentStepIdx === (lesson.steps?.length || 1) - 1;
+  const stepPercent = progressPercent(currentStepIdx + 1, lesson.steps?.length || 1);
+
+  useEffect(() => {
+    if (step?.type === "builder" || step?.type === "exercise" || step?.type === "simulation") {
+      setSidebarCollapsed(true);
+    }
+  }, [step?.type, setSidebarCollapsed]);
+
+  if (!step) {
+    return (
+      <AppShell>
+        <div className="text-center py-20 text-gray-500">Lesson content not found.</div>
+      </AppShell>
+    );
+  }
 
   function handleNext() {
     if (!isLast) {
@@ -128,7 +165,7 @@ export default function LessonPage({ params }: Props) {
               <Link href={`/modules/${mod.slug}`}>
                 <Button variant="secondary">Back to Module</Button>
               </Link>
-              <Link href={`/modules/${mod.slug}`}>
+              <Link href={nextUrl}>
                 <Button icon={<ArrowRight className="w-4 h-4" />} iconPosition="right">
                   Next Lesson
                 </Button>
@@ -144,7 +181,7 @@ export default function LessonPage({ params }: Props) {
   return (
     <GuideEngine>
       <AppShell>
-        <div className="max-w-2xl mx-auto">
+        <div className={`mx-auto transition-all duration-500 ease-in-out ${(step.type === 'builder' || step.type === 'simulation') ? 'max-w-[1800px] w-full px-4 lg:px-8' : 'max-w-2xl px-4'}`}>
           {/* Breadcrumb */}
           <Link
             href={`/modules/${mod.slug}`}
@@ -291,6 +328,13 @@ export default function LessonPage({ params }: Props) {
               {step.type === "builder" && (
                 <div className="mb-4">
                   <PortfolioBuilder onComplete={handleComplete} />
+                </div>
+              )}
+
+              {/* Simulation Step */}
+              {step.type === "simulation" && (
+                <div className="mb-4">
+                  <JobSimulation onComplete={handleComplete} />
                 </div>
               )}
             </motion.div>

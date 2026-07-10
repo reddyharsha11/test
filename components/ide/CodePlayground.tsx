@@ -461,11 +461,11 @@ function FileExplorerPanel({ isDark }: { isDark: boolean }) {
   const filteredFiles = visibleFiles.filter((filePath) =>
     filePath.toLowerCase().includes(searchQuery.toLowerCase())
   );
-
+  
   const fileTree = buildFileTree(filteredFiles);
 
   return (
-    <div className="flex h-full min-h-0 min-w-[240px] flex-col select-none">
+    <div className="flex h-full min-h-0 min-w-0 flex-col select-none">
       {/* File Explorer Title / Header */}
       <div
         className="flex-shrink-0 px-3 py-2 border-b flex items-center justify-between"
@@ -800,7 +800,7 @@ function IDEToolbar({
     }
   };
 
-  const ICONS = { vanilla: "🟡", react: "⚛️", nextjs: "▲" } as Record<string, string>;
+  const ICONS = { vanilla: "🟡", react: "⚛️", nextjs: "▲", static: "🌐" } as Record<string, string>;
 
   return (
     <div
@@ -1115,6 +1115,28 @@ function ResizeHandle({ vertical = false }: { vertical?: boolean }) {
   );
 }
 
+function LoadingOverlay() {
+  const { sandpack } = useSandpack();
+  const loading = sandpack.status === "initial" || sandpack.status === "idle" || sandpack.status === "running";
+
+  if (!loading) return null;
+
+  return (
+    <div className="absolute inset-0 bg-[#0f172a]/90 backdrop-blur-sm flex flex-col items-center justify-center z-30 transition-all duration-300">
+      <div className="relative w-14 h-14 mb-4 flex items-center justify-center">
+        {/* Glowing aura */}
+        <div className="absolute inset-0 rounded-full bg-indigo-500/25 blur-xl animate-pulse" />
+        {/* Dual outer spinner */}
+        <div className="absolute inset-0 rounded-full border-4 border-indigo-500/10 border-t-indigo-500 animate-spin" />
+        {/* Inner reverse spinner */}
+        <div className="absolute inset-2 rounded-full border-4 border-violet-500/10 border-t-violet-500 animate-[spin_1s_linear_infinite_reverse]" />
+      </div>
+      <p className="text-white font-black text-[10px] tracking-widest uppercase animate-pulse">Compiling Output...</p>
+      <p className="text-slate-400 text-[9px] mt-1.5 font-medium">Booting up the live preview</p>
+    </div>
+  );
+}
+
 // ─── Main CodePlayground Component ────────────────────────────────────────────
 export function CodePlayground({
   template = "vanilla",
@@ -1127,7 +1149,7 @@ export function CodePlayground({
 }: CodePlaygroundProps) {
   const [isDark, setIsDark] = useState(true);
   const [showConsole, setShowConsole] = useState(false);
-  const [showExplorer, setShowExplorer] = useState(true);
+  const [showExplorer, setShowExplorer] = useState(options.showFileExplorer ?? true);
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [layoutMode, setLayoutMode] = useState<LayoutMode>("horizontal");
   const [fontSize, setFontSize] = useState(14);
@@ -1226,7 +1248,7 @@ export function CodePlayground({
         template={template}
         files={files}
         theme={isDark ? atomDark : aquaBlue}
-        options={{ recompileMode: "immediate", recompileDelay: 300 }}
+        options={{ initMode: "immediate", recompileMode: "immediate", recompileDelay: 300 }}
         style={{ display: "flex", flexDirection: "column", flex: 1, minHeight: 0, overflow: "hidden" }}
       >
         {/* Top toolbar header menu */}
@@ -1254,28 +1276,30 @@ export function CodePlayground({
         <div style={{ flex: 1, minHeight: 0, overflow: "hidden", display: "flex" }}>
           {/* ── HORIZONTAL Split-Pane layout ── */}
           {layoutMode === "horizontal" && (
-            <PanelGroup orientation="horizontal" style={{ flex: 1, minHeight: 0 }}>
-              {/* Collapsible Nested File Explorer */}
+            <div style={{ display: 'flex', flexDirection: 'row', flex: 1, height: '100%', minWidth: 0, overflow: 'hidden' }}>
+              {/* Fixed Width File Explorer */}
               {showExplorer && (
-                <Panel
-                  defaultSize={22}
-                  minSize={16}
-                  maxSize={40}
+                <div
                   style={{
+                    width: '240px',
+                    flexShrink: 0,
                     background: EXPBG,
                     display: "flex",
                     flexDirection: "column",
                     overflow: "hidden",
+                    borderRight: `1px solid ${BORDER}`,
                   }}
                 >
                   <FileExplorerPanel isDark={isDark} />
-                </Panel>
+                </div>
               )}
-              {showExplorer && <ResizeHandle />}
+
+              <PanelGroup key={`horizontal-${showConsole}`} orientation="horizontal" style={{ flex: 1, minHeight: 0 }}>
+
 
               {/* Central Editor */}
               <Panel
-                defaultSize={showExplorer ? 43 : 55}
+                defaultSize={showExplorer ? 37 : 55}
                 minSize={25}
                 style={{ display: "flex", flexDirection: "column", overflow: "hidden" }}
               >
@@ -1299,7 +1323,7 @@ export function CodePlayground({
                 minSize={20}
                 style={{ display: "flex", flexDirection: "column", overflow: "hidden" }}
               >
-                <PanelGroup orientation="vertical" style={{ flex: 1, minHeight: 0 }}>
+                <PanelGroup key={`vertical-preview-${showConsole}`} orientation="vertical" style={{ flex: 1, minHeight: 0 }}>
                   {/* Web Output Preview */}
                   <Panel
                     defaultSize={showConsole ? 65 : 100}
@@ -1307,13 +1331,14 @@ export function CodePlayground({
                     style={{ display: "flex", flexDirection: "column", overflow: "hidden" }}
                   >
                     <PreviewBar isDark={isDark} />
-                    <div style={{ flex: 1, minHeight: 0, overflow: "hidden", background: "white" }}>
+                    <div style={{ flex: 1, minHeight: 0, overflow: "hidden", background: "white", position: "relative" }}>
                       <SandpackPreview
                         showRefreshButton={false}
                         showNavigator={false}
                         showOpenInCodeSandbox={false}
                         style={{ width: "100%", height: "100%" }}
                       />
+                      <LoadingOverlay />
                     </div>
                   </Panel>
 
@@ -1358,14 +1383,15 @@ export function CodePlayground({
                 </PanelGroup>
               </Panel>
             </PanelGroup>
+            </div>
           )}
 
           {/* ── VERTICAL Split-Pane layout ── */}
           {layoutMode === "vertical" && (
-            <PanelGroup orientation="vertical" style={{ flex: 1, minHeight: 0 }}>
+            <PanelGroup key={`vertical-${showExplorer}-${showConsole}`} orientation="vertical" style={{ flex: 1, minHeight: 0 }}>
               {/* Upper row: Explorer and Editor */}
               <Panel defaultSize={50} minSize={20} style={{ display: "flex", flexDirection: "column", overflow: "hidden" }}>
-                <PanelGroup orientation="horizontal" style={{ flex: 1, minHeight: 0 }}>
+                <PanelGroup key={`horizontal-top-${showExplorer}`} orientation="horizontal" style={{ flex: 1, minHeight: 0 }}>
                   {showExplorer && (
                     <Panel
                       defaultSize={22}
@@ -1399,16 +1425,17 @@ export function CodePlayground({
 
               {/* Lower row: Live Web Output and Console logs */}
               <Panel defaultSize={50} minSize={20} style={{ display: "flex", overflow: "hidden" }}>
-                <PanelGroup orientation="horizontal" style={{ flex: 1, minHeight: 0 }}>
+                <PanelGroup key={`horizontal-bottom-${showConsole}`} orientation="horizontal" style={{ flex: 1, minHeight: 0 }}>
                   <Panel defaultSize={showConsole ? 60 : 100} minSize={30} style={{ display: "flex", flexDirection: "column", overflow: "hidden" }}>
                     <PreviewBar isDark={isDark} />
-                    <div style={{ flex: 1, minHeight: 0, overflow: "hidden", background: "white" }}>
+                    <div style={{ flex: 1, minHeight: 0, overflow: "hidden", background: "white", position: "relative" }}>
                       <SandpackPreview
                         showRefreshButton={false}
                         showNavigator={false}
                         showOpenInCodeSandbox={false}
                         style={{ width: "100%", height: "100%" }}
                       />
+                      <LoadingOverlay />
                     </div>
                   </Panel>
                   {showConsole && <ResizeHandle />}

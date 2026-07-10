@@ -75,6 +75,11 @@ export const useGuideStore = create<GuideState>()(
             animation: "happy",
             speech: "Great! You've seen everything on this page! 🎉",
           });
+          
+          setTimeout(() => {
+            set({ speech: "", animation: "idle" });
+          }, 3500);
+          
           return;
         }
         const step = currentSequence[next];
@@ -105,12 +110,13 @@ export const useGuideStore = create<GuideState>()(
 
       skip: () => {
         const { currentSequence } = get();
-        const last = currentSequence[currentSequence.length - 1];
         set({
           currentStep: currentSequence.length - 1,
           playing: false,
           overlayVisible: false,
-          ...(last ? getStepValues(last) : {}),
+          speech: "",
+          animation: "idle",
+          targetSelector: null,
         });
       },
 

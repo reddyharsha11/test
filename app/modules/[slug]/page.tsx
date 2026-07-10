@@ -116,6 +116,17 @@ export default function ModuleDetailPage({ params }: Props) {
                     {mod.xpReward} XP
                   </span>
                 </div>
+
+                <div className="mt-6">
+                  <Link href={`/modules/${mod.slug}/lesson/${mod.lessons[Math.max(0, completedCount)]?.id ?? mod.lessons[0]?.id}`}>
+                    <Button 
+                      icon={<Play className="w-4 h-4" />} 
+                      className="bg-white text-gray-900 hover:bg-gray-100 shadow-lg hover:shadow-xl font-bold px-8 transition-all"
+                    >
+                      {completedCount > 0 ? "Continue Module" : "Start Module"}
+                    </Button>
+                  </Link>
+                </div>
               </div>
               <div className="text-8xl">{mod.icon}</div>
             </div>

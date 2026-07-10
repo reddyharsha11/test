@@ -6,27 +6,37 @@ import { motion, AnimatePresence } from 'framer-motion';
 
 const QUESTIONS = [
   {
-    title: "Dawn or Dusk?",
-    subtitle: "CHOOSE ONE TO CONTINUE",
+    title: "What catches your eye first on a website?",
+    subtitle: "SELECT WHAT MATTERS MOST TO YOU",
     options: [
-      { text: "Dawn", label: "Dawn", type: "frontend", icon: "🌅", description: "The beginning of light. Perfect for visual thinkers." },
-      { text: "Dusk", label: "Dusk", type: "backend", icon: "🌃", description: "The onset of night. For those who work behind the scenes." }
+      { text: "Colors, animations, layout styles, and visual beauty.", label: "The Design", type: "frontend", icon: "🎨", description: "How the website looks and feels to interact with." },
+      { text: "Loading speed, secure checkout, and backend actions.", label: "The Engine", type: "backend", icon: "⚙️", description: "How the website stores data and runs securely." }
     ]
   },
   {
-    title: "Logic or Magic?",
-    subtitle: "CHOOSE YOUR PATH",
+    title: "How do you prefer to work with data?",
+    subtitle: "CHOOSE YOUR IDEAL LOGIC STYLE",
     options: [
-      { text: "Logic", label: "Logic", type: "data", icon: "📐", description: "Structured, predictable, and measurable." },
-      { text: "Magic", label: "Magic", type: "ai", icon: "✨", description: "Unpredictable, powerful, and mysterious." }
+      { text: "Analyzing numbers, building charts, and finding database trends.", label: "Data Analysis", type: "data", icon: "📐", description: "Finding secrets hidden inside large database tables." },
+      { text: "Training chatbots, working with AI engines, and cognitive tools.", label: "AI Intelligence", type: "ai", icon: "🤖", description: "Teaching computer systems to think and reason like humans." }
     ]
   },
   {
-    title: "Structure or Fluidity?",
-    subtitle: "HOW DO YOU BUILD?",
+    title: "Which project would you rather build?",
+    subtitle: "CHOOSE A FUN PROJECT TO UNDERTAKE",
     options: [
-      { text: "Structure", label: "Structure", type: "backend", icon: "🏛️", description: "Rigid foundations that support everything." },
-      { text: "Fluidity", label: "Fluidity", type: "frontend", icon: "🌊", description: "Adaptable, flowing, and ever-changing." }
+      { text: "A beautiful landing page for a fashion brand with smooth animations.", label: "Visual Interface", type: "frontend", icon: "🌊", description: "Interactive frontend design using modern CSS & HTML." },
+      { text: "A login API that supports millions of secure concurrent connections.", label: "Backend Architecture", type: "backend", icon: "🏛️", description: "Robust backend system architecture with Express and databases." }
+    ]
+  },
+  {
+    title: "Which developer path sounds most exciting to you?",
+    subtitle: "CHOOSE THE ULTIMATE CAREER FOCUS",
+    options: [
+      { text: "Creative Developer (Frontend & UI design)", label: "Frontend Dev", type: "frontend", icon: "🎨", description: "Crafting client-side interactions in modern browsers." },
+      { text: "Backend Architect (API design, databases, security)", label: "Backend Dev", type: "backend", icon: "💾", description: "Structuring servers and building robust systems." },
+      { text: "Data Platform Analyst (Cleansing, trends, databases)", label: "Data Analyst", type: "data", icon: "📈", description: "Processing big data pipelines for business intelligence." },
+      { text: "Machine Learning Engineer (AI models, neural nets, prompts)", label: "AI Engineer", type: "ai", icon: "🧠", description: "Training models and integrating semantic AI kernels." }
     ]
   }
 ];
@@ -69,8 +79,8 @@ export default function Quiz() {
           </div>
           <h1 className="text-5xl font-black mb-4">You belong to <span className="text-brand-500">{result.toUpperCase()}</span></h1>
           <p className="text-xl text-gray-500 dark:text-gray-400 mb-12">The sorting is complete. Your learning path is ready.</p>
-          <button onClick={() => router.push('/dashboard')} className="bg-brand-600 hover:bg-brand-500 text-white font-bold px-8 py-4 rounded-xl transition-all shadow-glow-md transform hover:scale-105">
-            Enter Dashboard
+          <button onClick={() => router.push('/modules/portfolio-builder')} className="bg-brand-600 hover:bg-brand-500 text-white font-bold px-8 py-4 rounded-xl transition-all shadow-glow-md transform hover:scale-105">
+            Start Module Two
           </button>
         </motion.div>
       </div>
@@ -100,36 +110,22 @@ export default function Quiz() {
           <h1 className="text-4xl md:text-5xl font-black mb-3 drop-shadow-sm text-center">{q.title}</h1>
           <p className="text-sm font-bold text-brand-500 uppercase tracking-widest mb-16 text-center">{q.subtitle}</p>
           
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 w-full">
-            
-            {/* Option 1 */}
-            <motion.div 
-              whileHover={{ scale: 1.03, y: -5 }}
-              whileTap={{ scale: 0.98 }}
-              className="group cursor-pointer rounded-3xl p-8 bg-white dark:bg-surface-dark-100 border-2 border-surface-200 dark:border-surface-dark-300 hover:border-brand-500 shadow-xl hover:shadow-[0_0_40px_rgba(168,85,247,0.2)] transition-all duration-300 flex flex-col items-center text-center"
-              onClick={() => handleNext(q.options[0].type)}
-            >
-              <div className="w-24 h-24 rounded-2xl bg-surface-100 dark:bg-surface-dark-200 flex items-center justify-center text-5xl mb-6 group-hover:scale-110 transition-transform">
-                {q.options[0].icon}
-              </div>
-              <h3 className="text-3xl font-bold mb-3">{q.options[0].label}</h3>
-              <p className="text-gray-500 dark:text-gray-400 font-medium">{q.options[0].description}</p>
-            </motion.div>
-            
-            {/* Option 2 */}
-            <motion.div 
-              whileHover={{ scale: 1.03, y: -5 }}
-              whileTap={{ scale: 0.98 }}
-              className="group cursor-pointer rounded-3xl p-8 bg-white dark:bg-surface-dark-100 border-2 border-surface-200 dark:border-surface-dark-300 hover:border-brand-500 shadow-xl hover:shadow-[0_0_40px_rgba(168,85,247,0.2)] transition-all duration-300 flex flex-col items-center text-center"
-              onClick={() => handleNext(q.options[1].type)}
-            >
-              <div className="w-24 h-24 rounded-2xl bg-surface-100 dark:bg-surface-dark-200 flex items-center justify-center text-5xl mb-6 group-hover:scale-110 transition-transform">
-                {q.options[1].icon}
-              </div>
-              <h3 className="text-3xl font-bold mb-3">{q.options[1].label}</h3>
-              <p className="text-gray-500 dark:text-gray-400 font-medium">{q.options[1].description}</p>
-            </motion.div>
-
+          <div className={`grid grid-cols-1 ${q.options.length > 2 ? 'md:grid-cols-2 lg:grid-cols-4' : 'md:grid-cols-2'} gap-6 w-full`}>
+            {q.options.map((opt, optIdx) => (
+              <motion.div 
+                key={optIdx}
+                whileHover={{ scale: 1.03, y: -5 }}
+                whileTap={{ scale: 0.98 }}
+                className="group cursor-pointer rounded-3xl p-6 bg-white dark:bg-surface-dark-100 border-2 border-surface-200 dark:border-surface-dark-300 hover:border-brand-500 shadow-xl hover:shadow-[0_0_40px_rgba(168,85,247,0.2)] transition-all duration-300 flex flex-col items-center text-center"
+                onClick={() => handleNext(opt.type)}
+              >
+                <div className="w-20 h-20 rounded-2xl bg-surface-100 dark:bg-surface-dark-200 flex items-center justify-center text-4xl mb-4 group-hover:scale-110 transition-transform">
+                  {opt.icon}
+                </div>
+                <h3 className="text-xl font-bold mb-2">{opt.label}</h3>
+                <p className="text-sm text-gray-500 dark:text-gray-400 font-medium">{opt.description}</p>
+              </motion.div>
+            ))}
           </div>
         </motion.div>
       </AnimatePresence>

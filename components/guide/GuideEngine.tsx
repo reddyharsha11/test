@@ -40,6 +40,17 @@ export function GuideEngine({ children }: { children: React.ReactNode }) {
       sync();
     }, 150);
 
+    const startTime = Date.now();
+    const tryScroll = () => {
+      const el = document.querySelector(targetSelector);
+      if (el) {
+        el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      } else if (Date.now() - startTime < 2000) {
+        setTimeout(tryScroll, 100);
+      }
+    };
+    tryScroll();
+
     return () => {
       clearTimeout(tid);
       cancelAnimationFrame(rafId);

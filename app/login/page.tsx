@@ -1,53 +1,34 @@
 "use client";
 
 import { useState } from "react";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod";
-import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
-import { Mail, Lock, Eye, EyeOff, ArrowRight } from "lucide-react";
-import { Input } from "@/components/ui/Input";
+import { ArrowRight, Sparkles, Trophy, ShieldCheck, Zap } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 import { CharacterRenderer } from "@/components/character/CharacterRenderer";
 import { useAuthStore } from "@/store/authStore";
 import { useGuideStore } from "@/store/guideStore";
 import { useUIStore } from "@/store/uiStore";
 
-const schema = z.object({
-  email: z.string().email("Please enter a valid email"),
-  password: z.string().min(6, "Password must be at least 6 characters"),
-});
-
-type FormData = z.infer<typeof schema>;
-
-export default function LoginPage() {
+export default function GetStartedPage() {
   const router = useRouter();
   const { setUser, isLoading, setLoading } = useAuthStore();
   const { setCharacterType } = useGuideStore();
   const { addToast } = useUIStore();
-  const [showPassword, setShowPassword] = useState(false);
 
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<FormData>({ resolver: zodResolver(schema) });
-
-  async function onSubmit(data: FormData) {
+  async function handleGetStarted() {
     setLoading(true);
     try {
-      // Simulate API call — replace with real API
-      await new Promise((r) => setTimeout(r, 1200));
+      // Simulate quick initialization
+      await new Promise((r) => setTimeout(r, 600));
       setUser(
         {
           _id: "user-1",
-          name: "Harsha",
-          email: data.email,
+          name: "Learner",
+          email: "learner@guidelearn.com",
           characterType: "male",
-          xp: 1200,
-          streak: 5,
+          xp: 100,
+          streak: 1,
           lastLoginDate: new Date().toISOString(),
           createdAt: new Date().toISOString(),
           role: "student",
@@ -55,10 +36,18 @@ export default function LoginPage() {
         "mock-jwt-token"
       );
       setCharacterType("male");
-      addToast({ type: "success", title: "Welcome back! 👋", message: "Let's keep learning!" });
+      addToast({ 
+        type: "success", 
+        title: "Welcome to GuideLearn! 👋", 
+        message: "Let's begin our interactive coding session!" 
+      });
       router.push("/onboarding/theme");
     } catch {
-      addToast({ type: "error", title: "Login failed", message: "Check your credentials and try again." });
+      addToast({ 
+        type: "error", 
+        title: "Failed to initialize session", 
+        message: "Please reload the page and try again." 
+      });
     } finally {
       setLoading(false);
     }
@@ -66,105 +55,80 @@ export default function LoginPage() {
 
   return (
     <div className="min-h-screen flex">
-      {/* Left — Form */}
+      {/* Left — Get Started Content Card */}
       <motion.div
         className="flex-1 flex flex-col justify-center px-8 sm:px-12 lg:px-20 bg-white dark:bg-surface-dark-50"
         initial={{ opacity: 0, x: -20 }}
         animate={{ opacity: 1, x: 0 }}
         transition={{ duration: 0.4 }}
       >
-        <div className="w-full max-w-md mx-auto">
+        <div className="w-full max-w-md mx-auto space-y-8">
           {/* Logo */}
-          <div className="flex items-center gap-2 mb-10">
-            <div className="w-9 h-9 rounded-xl bg-brand-gradient flex items-center justify-center">
+          <div className="flex items-center gap-2">
+            <div className="w-10 h-10 rounded-xl bg-brand-gradient flex items-center justify-center shadow-[0_4px_12px_rgba(168,85,247,0.25)]">
               <span className="text-white text-lg">⚡</span>
             </div>
-            <span className="text-xl font-black text-gray-900 dark:text-white">
+            <span className="text-2xl font-black text-gray-900 dark:text-white tracking-tight">
               GuideLearn
             </span>
           </div>
 
-          <h1 className="text-3xl font-black text-gray-900 dark:text-white mb-2">
-            Welcome back
-          </h1>
-          <p className="text-gray-500 dark:text-gray-400 mb-8">
-            Sign in to continue your learning journey
-          </p>
+          <div className="space-y-4">
+            <h1 className="text-4xl md:text-5xl font-black text-gray-900 dark:text-white leading-tight">
+              Master coding <br />
+              with an <span style={{ background: "linear-gradient(135deg, #a855f7 0%, #6366f1 100%)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text" }}>AI Guide</span>
+            </h1>
+            <p className="text-gray-500 dark:text-gray-400 text-sm leading-relaxed">
+              Step into a gamified study environment. Build real developer portfolios with compiling sandbox workspaces, answer scenario questions, and simulate real tech jobs.
+            </p>
+          </div>
 
-          <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
-            <Input
-              id="login-email"
-              label="Email address"
-              type="email"
-              placeholder="you@example.com"
-              icon={<Mail className="w-4 h-4" />}
-              error={errors.email?.message}
-              {...register("email")}
-            />
-            <Input
-              id="login-password"
-              label="Password"
-              type={showPassword ? "text" : "password"}
-              placeholder="••••••••"
-              icon={<Lock className="w-4 h-4" />}
-              error={errors.password?.message}
-              iconPosition="left"
-              {...register("password")}
-            />
+          {/* Quick Value Props */}
+          <div className="space-y-3.5">
+            {[
+              { text: "Personalized AI Tutor Guides", icon: <Sparkles className="w-4 h-4 text-purple-500" /> },
+              { text: "Instant Compiler Sandbox Tools", icon: <Zap className="w-4 h-4 text-amber-500" /> },
+              { text: "Gamified Simulated Work Tasks", icon: <Trophy className="w-4 h-4 text-emerald-500" /> },
+            ].map((prop, idx) => (
+              <div key={idx} className="flex items-center gap-3 text-sm text-gray-600 dark:text-gray-300 font-medium">
+                <span className="p-1.5 rounded-lg bg-surface-100 dark:bg-surface-dark-100">{prop.icon}</span>
+                <span>{prop.text}</span>
+              </div>
+            ))}
+          </div>
 
-            <div className="flex items-center justify-between">
-              <label className="flex items-center gap-2 cursor-pointer">
-                <input type="checkbox" className="w-4 h-4 rounded accent-brand-500" />
-                <span className="text-sm text-gray-600 dark:text-gray-400">Remember me</span>
-              </label>
-              <Link
-                href="/forgot-password"
-                className="text-sm font-semibold text-brand-600 dark:text-brand-400 hover:underline"
-              >
-                Forgot password?
-              </Link>
-            </div>
-
+          <div className="pt-2">
             <Button
-              type="submit"
+              onClick={handleGetStarted}
               fullWidth
               size="lg"
               loading={isLoading}
-              icon={<ArrowRight className="w-4 h-4" />}
+              icon={<ArrowRight className="w-5 h-5" />}
               iconPosition="right"
+              className="py-4 font-black shadow-[0_8px_25px_rgba(168,85,247,0.3)] hover:shadow-[0_12px_30px_rgba(168,85,247,0.4)]"
             >
-              Sign in
+              Get Started
             </Button>
-          </form>
-
-          <p className="text-center text-sm text-gray-500 dark:text-gray-400 mt-6">
-            Don&apos;t have an account?{" "}
-            <Link
-              href="/signup"
-              className="font-bold text-brand-600 dark:text-brand-400 hover:underline"
-            >
-              Create one free
-            </Link>
-          </p>
+          </div>
         </div>
       </motion.div>
 
-      {/* Right — Animated Guide */}
+      {/* Right — Animated Guide Rendering */}
       <motion.div
         className="hidden lg:flex flex-1 flex-col items-center justify-center relative bg-gradient-to-br from-brand-500 to-brand-700 overflow-hidden"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.6 }}
       >
-        {/* Background decoration */}
+        {/* Background ambient lighting */}
         <div className="absolute inset-0 overflow-hidden">
-          <div className="absolute -top-20 -right-20 w-80 h-80 rounded-full bg-white/5" />
-          <div className="absolute bottom-0 -left-10 w-60 h-60 rounded-full bg-white/5" />
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] rounded-full bg-white/3" />
+          <div className="absolute -top-20 -right-20 w-96 h-96 rounded-full bg-white/5 filter blur-3xl" />
+          <div className="absolute bottom-0 -left-10 w-80 h-80 rounded-full bg-white/5 filter blur-2xl" />
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full bg-white/3 filter blur-3xl" />
         </div>
 
-        <div className="relative flex flex-col items-center gap-6 text-center px-12">
-          {/* Character */}
+        <div className="relative flex flex-col items-center gap-8 text-center px-12">
+          {/* Character wave */}
           <motion.div
             animate={{ y: [0, -12, 0] }}
             transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
@@ -173,35 +137,36 @@ export default function LoginPage() {
               characterType="male"
               animation="wave"
               size="xl"
+              className="drop-shadow-[0_20px_50px_rgba(0,0,0,0.3)]"
             />
           </motion.div>
 
-          {/* Speech bubble */}
+          {/* Guide dialogue bubble */}
           <motion.div
-            className="bg-white/15 backdrop-blur-md rounded-3xl px-8 py-6 border border-white/20 max-w-xs"
+            className="bg-white/10 backdrop-blur-lg rounded-3xl p-6 border border-white/20 max-w-xs shadow-2xl"
             initial={{ opacity: 0, scale: 0.8 }}
             animate={{ opacity: 1, scale: 1 }}
-            transition={{ delay: 0.5, type: "spring" }}
+            transition={{ delay: 0.4, type: "spring" }}
           >
-            <p className="text-white text-xl font-bold leading-relaxed">
-              Hi 👋<br />
-              I&apos;m your learning guide.
+            <p className="text-white text-lg font-black leading-snug">
+              Hi there! 👋<br />
+              I&apos;m your custom study guide.
             </p>
-            <p className="text-white/80 text-sm mt-2">
-              Let&apos;s build amazing skills together.
+            <p className="text-white/80 text-xs mt-2 font-medium">
+              Click Get Started and let&apos;s build awesome code projects together!
             </p>
           </motion.div>
 
-          {/* Stats */}
-          <div className="flex gap-6 mt-4">
+          {/* Quick metric stats */}
+          <div className="flex gap-8 mt-4 bg-black/15 backdrop-blur-sm border border-white/5 px-6 py-3 rounded-2xl">
             {[
               { label: "Learners", value: "50K+" },
               { label: "Lessons", value: "500+" },
-              { label: "Modules", value: "30+" },
+              { label: "Modules", value: "3+" },
             ].map((s) => (
               <div key={s.label} className="text-center">
-                <p className="text-2xl font-black text-white">{s.value}</p>
-                <p className="text-xs text-white/60 font-medium">{s.label}</p>
+                <p className="text-xl font-black text-white">{s.value}</p>
+                <p className="text-[10px] text-white/60 font-semibold uppercase tracking-wider">{s.label}</p>
               </div>
             ))}
           </div>

@@ -11,7 +11,7 @@ export interface CodeExample {
 export interface LessonStep {
   id: string;
   title: string;
-  type: "explanation" | "example" | "exercise" | "video" | "quiz-mini" | "builder";
+  type: "explanation" | "example" | "exercise" | "video" | "quiz-mini" | "builder" | "simulation";
   content: string;
   image?: string;
   codeExample?: CodeExample;
